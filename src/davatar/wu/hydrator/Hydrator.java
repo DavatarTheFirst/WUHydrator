@@ -15,13 +15,11 @@ public class Hydrator implements WurmServerMod, PreInitable {
     private static Logger logger = Logger.getLogger("Hydrator");
     
     public static void logException(String msg, Throwable e) {
-        if (logger != null)
-            logger.log(Level.SEVERE, msg, e);
+        if (logger != null) { logger.log(Level.SEVERE, msg, e); }
     }
 
     public static void logInfo(String msg) {
-        if (logger != null)
-            logger.log(Level.INFO, msg);
+        if (logger != null) { logger.log(Level.INFO, msg); }
     }
 
     public String getVersion() {
@@ -31,13 +29,9 @@ public class Hydrator implements WurmServerMod, PreInitable {
 	@Override
 	public void preInit() {
 		try {
-			logInfo("getCtClass");
 			CtClass ctClass = HookManager.getInstance().getClassPool().getCtClass("com.wurmonline.server.creatures.CreatureStatus");
-			logInfo("new array");
 			CtClass[] methodArguments = new CtClass[1];
-			logInfo("set float type");
 			methodArguments[0] = CtClass.floatType;
-			logInfo("getDeclaredMethod");
 			CtMethod modifyThirst = ctClass.getDeclaredMethod("modifyThirst", methodArguments);
 			modifyThirst.setBody("{ if($1 >= 0) { return this.modifyThirst(-$1, -1.0f, -1.0f, -1.0f, -1.0f); } else { return this.modifyThirst($1, -1.0f, -1.0f, -1.0f, -1.0f); } }");
 		} catch(Exception e) {
